@@ -1,0 +1,20 @@
+name: Production
+on:
+  push:
+    branches: ['master']
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: docker/build-push-action@v1
+        with:
+          username: ${{ secrets.QUAY_IO_BOT_USERNAME }}
+          password: ${{ secrets.QUAY_IO_BOT_PASSWORD }}
+          registry: quay.io
+          repository: ${{ github.repository }}
+          add_git_labels: true
+          tag_with_sha: true
